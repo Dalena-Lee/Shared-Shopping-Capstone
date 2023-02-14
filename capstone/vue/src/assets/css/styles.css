@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url('https://fonts.cdnfonts.com/css/gelion');
+
+*, html {
+    margin: 0;
+    padding: 0;
+    transition: .2s;
+    max-height: 100vh;
+}
+
+body {
+    min-height: 100vh;
+    background: white;
+}
+
+.home {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-height: 100vh;
+    border-radius: 20px;
+    background: #eeeeee;
+}
+
+.account-container {
+    display: grid;
+    grid-row: 1 / 4;
+    grid-column: 1 / 5;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: #F7FAFC;
+    margin-top: 100px;
+    min-height: 100vh;
+}
+
+.account-container header {
+    grid-row: 1;
+    grid-column: 1 / 4;
+    margin-top: -100px;
+}
+
+.account-container account-main {
+    grid-row: 1 / 4;
+    grid-column: 1 / 4;
+}
+
+.login-container {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-radius: 30px;
+    margin: 30px 30px 30px 30px;
+}
+
+.login-header {
+    grid-row: 1;
+    grid-column: 1 / 4;
+    margin: 20px 40px 20px 40px;
+    margin-bottom: auto;
+    border-radius: 20px;
+    border-color: #1E6F30;
+}
+
+.login-main {
+    grid-row: 1 / 5;
+    grid-column: 1 / 4;
+    margin-top: 200px;
+}
+
+a {
+    text-decoration: none;
+}
+
+h3, h4, h5 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2 {
+    font-family: 'Gelion', sans-serif;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 3rem;
+    margin: 0;
+    text-align: center;
+}
+
+h5 {
+    font-size: 16px;
+}
+
+input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    font-size: 14px;
+}
+
+.brand {
+    grid-column: 1;
+    grid-row: 1;
+    font-family: 'Gelion', sans-serif;
+    color: #3DC795;
+}
+
+.create-list {
+    text-align: right;
+    margin-top: 55px;
+    font-family: "Gelion";
+    color: #3DC795;
+    font-size: 2.5rem;
+}
+
+.form2 form {
+    margin: 20px;
+    width: 300px;
+}
+
+.form2 {
+    padding: 10px 0px;
+    font-family: "Gelion";
+}
+
+.form2 h1 {
+    font-size: 22px;
+    margin-left: 18px;
+}
+
+.form2 p {
+    font-size: 16px;
+    text-align: left;
+    font-family: "Gelion";
+    font-weight: 500;
+
+}
+
+.form2 button {
+    background-color: #3DC795;
+    color: white;
+    border-style: none;
+    border-radius: 20px;
+    padding: 10px 30px;
+    margin-top: 2px;
+}
+
+.form2 input {
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 5px;
+}
+
+.overlay2 {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.4);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+.overlay2:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.form2 {
+    margin: 80px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    width: 20%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    margin-top: 300px;
+}
+
+.form2 h2 {
+    margin-top: 0;
+    color: #333;
+}
+.form2 .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+.form2 .close:hover {
+    color:#3DC795;
+}
+.form2 .content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+.create-list {
+    text-align: right;
+    margin-top: 55px;
+    font-family: "Gelion";
+    color: #3DC795;
+    font-size: 2.5rem;
+}
+
+.create-form {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 40px;
+}
+
+.box {
+    text-align: center;
+    margin: 0px auto;
+}
+
+.button {
+    color: #3DC795;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+
+.form2 form {
+    margin: 20px;
+    width: 300px;
+}
+
+.form2 {
+    padding: 10px 0px;
+    font-family: "Gelion";
+}
+
+.form2 h1 {
+    font-size: 22px;
+    margin-left: 18px;
+}
+
+.form2 p {
+    font-size: 16px;
+    text-align: left;
+    font-family: "Gelion";
+    font-weight: 500;
+
+}
+
+.form2 button {
+    background-color: #3DC795;
+    color: white;
+    border-style: none;
+    border-radius: 20px;
+    padding: 10px 30px;
+    margin-top: 2px;
+}
+
+.form2 input {
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-color: lightgray;
+    border-radius: 5px;
+}
+
+.overlay2 {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.4);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+.overlay2:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.form2 {
+    margin: 80px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    width: 20%;
+    position: relative;
+    transition: all 5s ease-in-out;
+    margin-top: 300px;
+}
+
+.form2 h2 {
+    margin-top: 0;
+    color: #333;
+}
+.form2 .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+}
+.form2 .close:hover {
+    color:#3DC795;
+}
+.form2 .content {
+    max-height: 30%;
+    overflow: auto;
+}
+
+.view-button {
+    font-family: "Gelion";
+    color: #3DC795;
+    font-size: 20px;
+    font-weight: 500;
+    padding: 0px 40px;
+    text-decoration: none;
+}
+
+th {
+    text-align: left;
+    padding: 20px 70px 0 20px;
+}
+
+td {
+    padding: 20px 20px 20px 20px;
+}
+
+.active h1{
+    font-size: 16px;
+}
+
+.list-headings h1 {
+    color: rgb(121, 121, 121);
+    font-size: 18px;
+
+}
+
+button.actions:hover{
+    cursor: pointer;
+}
+
+button.actions {
+    transition: all 200ms;
+
+}
+
+
