@@ -4,7 +4,7 @@ export default {
     getLists(groupID) {
         return axios.get(`/groups/lists/${groupID}`);
     },
-    createList(list) {
-        return axios.post('/groups/lists/create', list);
+    createList(list, groupID) {
+        return axios.post(`/groups/${groupID}/lists/create`, list);
     }
 }

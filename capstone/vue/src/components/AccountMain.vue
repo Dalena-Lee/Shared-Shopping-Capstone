@@ -61,7 +61,23 @@
                     <input id="members" type="radio" name="tabs">
                     <label for="members"><h1 class="content-label">Members</h1></label>
                     <a class="list-button" href="#create-list-form"><h5>+ Create new list</h5></a>
-                
+                    <div id="create-list-form" class="overlay2">
+                        <div class="form2">
+                            <h1>Create new list</h1>
+                            <a class="close" href="#">&times;</a>
+                            <div class="content">
+                                <form>
+                                    <div>
+                                        <label for="listName"><p>List name</p></label>
+                                        <input type="text" name="listName" placeholder="Name your list" v-model="newList.listName"/>
+                                    </div>
+                                    <button class="actions" type="submit" v-on:click.prevent="saveList()">
+                                        <p>Create</p>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                        
                     <section id="list-content">
                         <table>
@@ -72,7 +88,7 @@
                                         <h1>Shopping</h1>
                                     </th>
                                     <th>
-                                        <h1>List</h1>
+                                        <h1 style="margin-right: 60px;">List</h1>
                                     </th>
                                     <th>
                                         <h1>By User</h1>
@@ -84,16 +100,28 @@
                             v-for="list in lists"
                             v-bind:key="list.listId"
                             v-bind:list="list"
+                            v-bind:class="{ activeList: list.listId === 'selectedList.listId' }"
                             >
                                 <td>
-                                    <input type="checkbox" v-bind:id="list.listId" v-bind:value="list.listId" v-model="selectedListIDs" style="display: inline-block;"/>
+                                    <input 
+                                    type="checkbox" 
+                                    v-bind:id="list.listId" 
+                                    v-bind:value="list.listId" 
+                                    v-model="selectedListIDs" 
+                                    style="display: inline-block; width: 80px;"
+                                    />
                                 </td>
                                 <td>
                                     <p>{{list.listName}}</p>
                                 </td>
                                 <td>
-                                    <select >
-                                        <option value>Show All</option>
+                                    <select>
+                                        <option value>Select User</option>
+                                        <option 
+                                        v-for="user in users"
+                                        v-bind:key="user.id"
+                                        v-bind:user="user"
+                                        value>{{user.username}}</option>
                                     </select>
                                 </td>
                             </tr>
@@ -120,18 +148,27 @@
             </div>
         </div>
         <div class="lists-container">
-            <h1 class="group-head">User is Currently Shopping for</h1>
-            <div 
-            v-for="list in selectedLists"
-            v-bind:key="list.listId">
-              <h1>{{ list.listName }}</h1>  
-            </div>
-            
+            <h1 class="list-head">Active Shopping List</h1>
+    
+            <table class="item-table">
+                <tr
+                v-for="item in itemList"
+                v-bind:key="item.itemId"
+                >
+                <td>
+                    <input type="checkbox" id="items" v-bind:value="item.itemId"/>
+                </td>
+                <td>
+                    <h2>{{ item.item }}</h2>
+                </td>
+                </tr>
+            </table>
         </div>
     </main>  
 </template>
 
 <script>
+import ItemService from '../services/ItemService';
 import CreateGroup from '../components/CreateGroup'
 import CreateList from '../components/CreateList.vue'
 import GroupService from '../services/GroupService';
@@ -144,9 +181,13 @@ export default {
             groups: [],
             lists: [],
             users: [],
-            selectedGroupID: 1,
-            selectedListIDs: [],
-            activeLists: []
+            items: [],
+            selectedGroupID: 330,
+            selectedListID: 5,
+            activeLists: [],
+            newList: {
+                listName: "",
+            },
         }
     },
     components: {
@@ -163,6 +204,25 @@ export default {
             this.users = response.data;
             });
         },
+        updateItems() {
+            ItemService.getItems(this.selectedListID).then(response => {
+                this.items = response.data;
+            })
+        },
+        saveList() {
+            const newList = {
+                listName: this.listName
+            }
+
+            let groupId = this.selectedGroupID;
+
+            ListService.createList(newList, groupId)
+            .then(response => {
+                if (response.status === 201) {
+                    window.location.reload();
+                }
+            })
+        }
     },
     computed: {
         findGroup() {
@@ -172,13 +232,27 @@ export default {
 
             return selectedGroup;
         },
+        activeList() {
+            let filteredList = this.lists;
+                filteredList = filteredList.filter((list) => {
+                    return this.selectedListID === list.listID;
+                })
+            return filteredList;
+        },
         selectedLists() {
             let activeLists = this.lists;
-            activeLists = activeLists.filter(( list ) =>
-                list.listId === this.selectedListIDs
-            );
+            activeLists = activeLists.filter(( list ) => {
+                return this.selectedListID === list.listId;
+            });
             return activeLists;
-        }
+        },
+        itemList() {
+        let items = this.items;
+            items = items.filter((item) => {
+                return this.selectedListID === item.listId;
+            });
+            return items;
+      }
     },
     created() {
         GroupService.getMyGroups().then(response => {
@@ -192,6 +266,11 @@ export default {
         ListService.getLists(this.selectedGroupID).then(response => {
             this.lists = response.data;
         });
+
+        ItemService.getItems(this.selectedListID).then(response => {
+            console.log(response);
+            this.items = response.data;
+        })
     }
 }
 </script>
@@ -218,7 +297,7 @@ export default {
     border-color: #3DC795;
     border-width: 5px;
     box-shadow: 0 14px 28px rgba(0,0,0,0.50);
-    margin: 20px 400px 60px 275px;
+    margin: 20px 400px 200px 275px;
 }
 
 .group-menu-container {
@@ -297,7 +376,7 @@ export default {
     margin-top: 95px;
     text-align: left;
     grid-row: 1;
-    grid-column: 1 / 3;
+    grid-column: 1 / 4;
     font-family: "Gelion";
     color:white;
     font-size: 2rem;
@@ -330,8 +409,8 @@ export default {
 #menuToggle{
   grid-row: 3;
   grid-column: 3;
-  top: 18px;
-  left: 110px;
+  top: -30px;
+  left: 420px;
   display: block;
   position: relative;
   z-index: 1;
@@ -345,6 +424,7 @@ export default {
   color: white;
   transition: color 0.3s ease;
 }
+
 
 #menuToggle input
 {
@@ -361,11 +441,9 @@ export default {
 
 #menuToggle span.hamburger{
   display: block;
-  width: 30px;
-  height: 3px;
-  top: -20px;
-  margin-top: -12px;
-  margin-left: 320px;
+  width: 33px;
+  height: 4px;
+  margin-bottom: 5px;
   position: relative;
   background:white;
   border-radius: 3px;
@@ -405,7 +483,7 @@ export default {
 #menu {
   position: absolute;
   width: 150px;
-  margin: 5px 0 0 -150px;
+  margin: 15px 0 0 -150px;
   padding: 20px;
   border-radius: 0 0 20px 20px;
   border-style: solid;
@@ -419,6 +497,7 @@ export default {
 }
 
 #menu li {
+  padding: 10px 0;
   font-family: "Gelion";
   font-size: 18px;
   font-weight: 500;
@@ -434,6 +513,7 @@ export default {
   transform: none;
   visibility: visible;
 }
+
 
 span.material-symbols-outlined {
     margin-right: 10px;
@@ -513,7 +593,7 @@ span.material-symbols-outlined {
 
 .lists-container {
     display: grid;
-    grid-template-columns: 250px 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     background:white;
     grid-column: 3 / 5;
@@ -523,7 +603,32 @@ span.material-symbols-outlined {
     border-color: #3DC795;
     border-width: 5px;
     box-shadow: 0 14px 28px rgba(0,0,0,0.50);
-    margin: 20px 275px 60px 100px;
+    margin: 20px 275px 200px 100px;
+    overflow-y: scroll;
 }
 
+.list-container #items:checked {
+  text-decoration: line-through;
+}
+
+.item-table {
+    grid-column: 1 / 5;
+    grid-row: 1 / 4;
+    margin-top: 140px;
+    text-align: left;
+    font-family: "Gelion";
+    font-size: 14px;
+    margin-right: 100px;
+    margin-left: 100px;
+}
+
+.list-head {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    text-align: center;
+    margin-top: 40px;
+    font-family: "Gelion";
+    color: #3DC795;
+    font-size: 2rem;
+}
 </style>

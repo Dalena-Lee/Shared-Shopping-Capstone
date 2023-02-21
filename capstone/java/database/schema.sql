@@ -42,15 +42,15 @@ CREATE TABLE lists (
     CONSTRAINT FK_list_group FOREIGN KEY (group_id) REFERENCES groups (group_id)
 );
 
-
-
 CREATE TABLE items (
     list_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     item_id SERIAL,
-    item_name varchar(100) NOT NULL,
+    item_name varchar(100) NOT NULL UNIQUE,
     item_category varchar(100),
-    CONSTRAINT PK_item PRIMARY KEY (item_id)
+    item_quantity int DEFAULT 1,
+    CONSTRAINT PK_item PRIMARY KEY (item_id),
+    CONSTRAINT FK_item_list FOREIGN KEY (list_id) REFERENCES lists (list_id)
 );
 
 COMMIT TRANSACTION;

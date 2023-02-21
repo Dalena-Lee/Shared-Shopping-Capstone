@@ -13,7 +13,7 @@ public interface ListDao {
 
     List<Lists> displayListsInGroup(int groupId);
 
-    void removeList(int listId);
+    String removeList(int listId);
 
     List<Lists> displayMyLists(Group group);
 

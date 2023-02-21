@@ -2,7 +2,9 @@
     <header>
         <div class="brand-container">
             <img class="logo" v-bind:src="require('../assets/logo.png')" alt=""/>
-            <h1 class="brand">GrocerWe</h1> 
+            <h1 class="brand">GrocerWe</h1>
+            <h1 class="intro-header">Welcome to GrocerWe! Share your shopping lists with friends and family!</h1>
+ 
         </div>
         
     </header>
@@ -46,5 +48,15 @@ h1 {
     width: 6rem;
     margin-top: 25px;
 }
+
+.intro-header {
+        color: rgb(121, 121, 121);
+        grid-column: 2 / 4;
+        grid-row: 1;
+        margin-right: 20px;
+        margin-top: 60px;
+        font-size: 30px;
+        font-family: 'Gelion', sans-serif;
+    }
 
 </style>

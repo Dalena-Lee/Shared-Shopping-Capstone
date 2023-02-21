@@ -36,22 +36,15 @@ public class ListController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/groups/lists/create", method = RequestMethod.POST)
-    public String createList(@RequestBody Lists lists){
-        try {
-            listDao.createList(lists, lists.getGroupId());
-
-        } catch (Exception e) {
-            return "Something went wrong";
-        }
-        return "List created successfully";
-
+    @RequestMapping(path = "/groups/{id}/lists/create", method = RequestMethod.POST)
+    public void createList(@RequestBody Lists lists, @PathVariable int id) {
+        listDao.createList(lists, id);
     }
-
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(path = "/groups/lists/{id}", method = RequestMethod.GET)
     public List<Lists> displayListsInGroup(@PathVariable int id){
+
         return listDao.displayListsInGroup(id);
     }
 
@@ -59,12 +52,19 @@ public class ListController {
     @ResponseStatus(HttpStatus.GONE)
     @RequestMapping(path = "/groups/lists/delete/{listId}", method = RequestMethod.DELETE)
     //postman says list deleted successfully bu databse doesnt reflect update yet
-    public void removeList(@Valid @PathVariable int listId){
-
+    public String removeList(  @Valid @PathVariable int listId){
+        try {
             listDao.removeList(listId);
+        }catch(Exception e){
+            return "There was a problem deleting this list";
+        }finally{
+            return "list deleted successfully";
+        }
+
 
     }
 
-    // displayMyLists ??? its in listDao
+
+
 
 }

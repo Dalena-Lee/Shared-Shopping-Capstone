@@ -2,7 +2,7 @@
     <div class="create-form">
         <div class="box">
             <a class="button" href="#create-group-form"> 
-                <h5>+ Create new group</h5>
+                <p>+ Create new group</p>
             </a>
         </div>
         <div id="create-group-form" class="overlay2">
@@ -15,7 +15,7 @@
                             <label for="groupName"><p>Group name</p></label>
                             <input type="text" name="groupName" placeholder="Name your group" v-model="group.groupName"/>
                         </div>
-                        <button class="actions" type="submit" v-on:click="saveGroup()" href="#">
+                        <button class="actions" type="submit" v-on:click="saveGroup();">
                             <p>Create</p>
                         </button>
                     </form>
@@ -50,7 +50,7 @@ export default {
                 }
             })
         },
-    },
+    }
 }
 
 </script>

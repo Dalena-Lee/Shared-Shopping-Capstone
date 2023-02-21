@@ -8,15 +8,15 @@ public class Items {
     private int itemId;
     @NotBlank
     private String item;
-
+    private int quantity;
     private String category;
     private int userId;
 
-    public Items(int listId, String item, int itemId, String category, int userId) {
+    public Items(int listId,String item, int itemId, int quantity, String category, int userId) {
         this.listId = listId;
         this.item = item;
         this.itemId = itemId;
-
+        this.quantity = quantity;
         this.category = category;
         this.userId = userId;
     }
@@ -55,7 +55,13 @@ public class Items {
         this.item = item;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public String getCategory() {
         return category;

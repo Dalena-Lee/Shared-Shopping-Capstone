@@ -47,7 +47,7 @@ public class JdbcListDao implements ListDao{
     public List<Lists> displayMyLists(Group group){
         List <Lists> groupLists = new ArrayList<>();
         String sql = "select list_id, list_name, group_id from lists where owner_id = ?;";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, group.getGroupID());
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,group.getGroupID());
         while(results.next()){
             Lists lists = mapRowToList(results);
             groupLists.add(lists);
@@ -58,10 +58,16 @@ public class JdbcListDao implements ListDao{
 
 
     @Override
-    public void removeList(int listId) {
+    public String removeList(int listId) {
         //postman says list deleted successfully bu databse doesnt reflect update yet
         String sql = "DELETE FROM lists WHERE list_id = ?;";
+        try {
             jdbcTemplate.update(sql,listId);
+        }catch (Exception e){
+            return "Couldn't find targeted list to delete.";
+        } finally {
+            return "List removed.";
+        }
     }
 
 

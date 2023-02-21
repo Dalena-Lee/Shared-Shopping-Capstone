@@ -1,5 +1,6 @@
 package com.techelevator.dao;
-
+//comment
+import com.techelevator.model.Group;
 import com.techelevator.model.Items;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -11,7 +12,6 @@ import java.util.List;
 
 @Component
 public class JdbcItemsDao implements ItemsDao {
-
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcItemsDao(JdbcTemplate jdbcTemplate) {
@@ -19,11 +19,9 @@ public class JdbcItemsDao implements ItemsDao {
     }
 
     @Override
-    public String addItemToList(Items item, int listsId, int principalID) {
-        String sql = "INSERT INTO items (item_name, item_category, list_id, user_id) VALUES (?, ?, ?, ?) RETURNING item_id;";
-        jdbcTemplate.queryForObject(sql, int.class, item.getItem(), item.getCategory(), listsId, principalID);
-        //add in timestamp for when item is added
-        return "Item added";
+    public void addItemToList(Items item, int listsId, int principalID) {
+        String sql = "INSERT INTO items (item_name, item_quantity, item_category, list_id, user_id) VALUES (?, ?, ?, ?, ?);";
+        jdbcTemplate.queryForObject(sql, int.class, item.getItem(), item.getQuantity(), item.getCategory(), listsId, principalID);
     }
 
     @Override
@@ -41,27 +39,24 @@ public class JdbcItemsDao implements ItemsDao {
     @Override
     public void editItemInList(Items item, int id) {
         String sql = "UPDATE items SET item_name = (?) WHERE item_id = (?);";
+        //String sql = " insert into items (item_name) values (?) where item_id = ?;";
         jdbcTemplate.update(sql, item.getItem(), id);
     }
 
-    // maybe instead of a string return an object?
-    // create new object that contains only the values we want to display
-    // convert user_id into the user's name
-    // return timestamp of added item
+
     @Override
-    public List<String> displayListItems(int listId) {
-        List<String> itemsList = new ArrayList<>();
-        Items items = new Items();
-        String sql = "select item_name, item_category, user_id from items where list_id = ?;";
+    public List<Items> displayListItems(int listId) {
+        List<Items> itemsList = new ArrayList<>();
+        String sql = "select * from items where list_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, listId);
         while (results.next()) {
-
-            itemsList.add("Name: " +items.getItem() + "   |   Category: " + items.getCategory() + "   |   UserID: " + items.getUserId());
+            Items newItem = mapRowToItem(results);
+            itemsList.add(newItem);
         }
         return itemsList;
     }
 
-    // useless??
+
     public Items mapRowToItem(SqlRowSet rs) {
         Items item = new Items();
         item.setListId(rs.getInt("list_id"));
@@ -69,14 +64,9 @@ public class JdbcItemsDao implements ItemsDao {
         return item;
     }
 
-    public Items mapDisplayToItem(SqlRowSet rs) {
+    public Items mapNameToItem(SqlRowSet rs) {
         Items item = new Items();
         item.setItem(rs.getString("item_name"));
-        item.setCategory(rs.getString("item_category"));
-        item.setUserId(rs.getInt("user_id"));
         return item;
     }
-
-
-
 }

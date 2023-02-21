@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/groups/lists")
+@RequestMapping("/groups")
 @PreAuthorize("isAuthenticated()")
 public class ItemController {
 
@@ -41,19 +41,18 @@ public class ItemController {
         this.userDao = userDao;
         this.itemsDao = itemsDao;
     }
-
-    // returns 500 error but adds to database
+   // no underscore item: , listId:
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(path = "/{listsId}/items/add",method = RequestMethod.POST)
-    public void addItemsToList(@Valid @RequestBody Items item, @PathVariable int listsId, Principal principal){
+    @RequestMapping(path = "/lists/{id}/items/add",method = RequestMethod.POST)
+    public void addItemsToList(@Valid @RequestBody Items item, @PathVariable int id, Principal principal) {
         int principalID = userDao.findIDByUsername(principal.getName());
-            itemsDao.addItemToList(item, listsId, principalID);
+        itemsDao.addItemToList(item, id, principalID);
     }
 
     //Need to pass in list id as a path variable; need to update methods to take in
     //new parameters
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequestMapping(path = "/{id}/items/remove/{itemId}", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/lists/{id}/items/remove/{itemId}", method = RequestMethod.DELETE)
     public String removeItemsFromList(@Valid @PathVariable int itemId) {
         try {
             itemsDao.removeItemFromList(itemId);
@@ -64,7 +63,7 @@ public class ItemController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequestMapping(path = "/{list_id}/clear", method = RequestMethod.DELETE)//change
+    @RequestMapping(path = "/lists/{list_id}/clear", method = RequestMethod.DELETE)//change
     public String clearList(@Valid @PathVariable int listId) {
         try {
             itemsDao.clearList(listId);
@@ -74,11 +73,13 @@ public class ItemController {
         return "List cleared successfully.";
     }
 
-
-    // make copies for all parameters to edit: name, category
     @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(path = "/items/edit/{id}", method = RequestMethod.PUT)
-    public String editItemInList(@Valid @RequestBody Items items, @PathVariable int id) {
+    @RequestMapping(path = "/lists/items/edit/{id}", method = RequestMethod.PUT)
+
+    //returns "item edited successfully" in postman,
+    // but does not reflect updated values in database yet
+
+    public String editItemInList(@Valid @RequestBody Items items,@PathVariable int id) {
         try {
             itemsDao.editItemInList(items, id);
         } catch (Exception e) {
@@ -87,9 +88,11 @@ public class ItemController {
         return "Item edited successfully.";
     }
 
-    @ResponseStatus(HttpStatus.FOUND)
-    @RequestMapping(path = "/items/all/{listId}",method = RequestMethod.GET)
-    public List<String> displayListItems(@Valid @PathVariable int listId) {
+//    @ResponseStatus(HttpStatus.FOUND)
+    @RequestMapping(path = "/lists/items/all/{listId}",method = RequestMethod.GET)
+    public List<Items> displayListItems(@Valid @PathVariable int listId) {
+        System.out.println("got here");
+        System.out.println(listId);
         return itemsDao.displayListItems(listId);
     }
 

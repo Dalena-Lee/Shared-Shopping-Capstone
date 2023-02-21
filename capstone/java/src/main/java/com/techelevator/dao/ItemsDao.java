@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ItemsDao {
 
-    String addItemToList(Items item, int listsId, int principalID);
+    void addItemToList(Items item, int listsId, int principalID);
 
-    List<String> displayListItems(int listId);
+    List<Items> displayListItems(int listId);
 
     void removeItemFromList(int itemId);
 

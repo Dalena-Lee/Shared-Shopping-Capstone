@@ -2,8 +2,8 @@
     <main class="main-container">
         <div class="intro">
             <!-- <h1 class="intro-puns">Pear up with your friends!</h1> -->
-            <h1 class="intro-header">Welcome to GrocerWe! Share your shopping lists with friends and family!</h1>
         </div>
+        <img class="pic" v-bind:src="require('../assets/appdevelopment.png')" alt=""/>
         <login-form class="login-form"></login-form>  
     </main>  
 </template>
@@ -28,6 +28,14 @@ export default {
         grid-template-rows: 1fr 1fr 1fr;
         margin-bottom: 20px;
     }
+
+    .pic {
+        width: 40rem;
+        grid-row: 1 / 4;
+        grid-column: 1 / 5;
+        margin-left: 200px;
+        margin-top: 100px;
+    }
     
     .login-form {
         grid-column: 3;
@@ -46,6 +54,7 @@ export default {
     }
 
     .intro-header {
+        color: rgb(121, 121, 121);
         grid-column: 1 / 5;
         grid-row: 1;
         margin-right: 20px;
